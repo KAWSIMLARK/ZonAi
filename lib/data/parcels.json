@@ -1,0 +1,411 @@
+[
+  {
+    "id": "TM-001",
+    "adresse": "1875 rue Notre-Dame Ouest, Trois-Rivières (QC) G9A 4X4",
+    "numero_lot": "1 204 587",
+    "municipalite": "Trois-Rivières",
+    "mrc": "Trois-Rivières",
+    "region": "Mauricie",
+    "superficie_m2": 612,
+    "valeur_fonciere": 248000,
+    "zonage": "Résidentielle (H-1)",
+    "usages_permis": [
+      "Résidentielle unifamiliale",
+      "Logement accessoire"
+    ],
+    "contraintes": [],
+    "zone_inondable": "non",
+    "milieux_humides": "non",
+    "batiment_existant": "oui",
+    "resume_ia": "Terrain résidentiel urbain à Trois-Rivières. Aucune contrainte environnementale identifiée. Lot bâti depuis avant 1990. Données complètes et cohérentes.",
+    "niveau_confiance": "eleve",
+    "date_mise_a_jour": "2026-04-18",
+    "sources": [
+      "Rôle d'évaluation Trois-Rivières 2026",
+      "Cadastre du Québec",
+      "Schéma d'aménagement"
+    ]
+  },
+  {
+    "id": "TM-002",
+    "adresse": "4220 boulevard Sainte-Madeleine, Trois-Rivières (Cap-de-la-Madeleine) (QC) G8T 2A1",
+    "numero_lot": "1 547 109",
+    "municipalite": "Trois-Rivières",
+    "mrc": "Trois-Rivières",
+    "region": "Mauricie",
+    "superficie_m2": 1845,
+    "valeur_fonciere": 189500,
+    "zonage": "Résidentielle (H-2)",
+    "usages_permis": [
+      "Résidentielle bifamiliale"
+    ],
+    "contraintes": [
+      "Proximité Saint-Laurent",
+      "Plaine inondable récurrence 0-20 ans"
+    ],
+    "zone_inondable": "oui",
+    "milieux_humides": "non",
+    "batiment_existant": "non",
+    "resume_ia": "Terrain situé en plaine inondable de récurrence 0-20 ans. La construction y est strictement encadrée par la Politique de protection des rives, du littoral et des plaines inondables. Vérification municipale obligatoire avant tout projet.",
+    "niveau_confiance": "eleve",
+    "date_mise_a_jour": "2026-03-22",
+    "sources": [
+      "MELCCFP, Cartographie des zones inondables",
+      "Rôle d'évaluation Trois-Rivières 2026"
+    ]
+  },
+  {
+    "id": "TM-003",
+    "adresse": "Secteur Pointe-du-Lac, Trois-Rivières (QC)",
+    "numero_lot": "1 089 442",
+    "municipalite": "Trois-Rivières",
+    "mrc": "Trois-Rivières",
+    "region": "Mauricie",
+    "superficie_m2": 4200,
+    "valeur_fonciere": null,
+    "zonage": "Mixte (M-3), à confirmer",
+    "usages_permis": [
+      "Résidentielle",
+      "Commerce de proximité"
+    ],
+    "contraintes": [
+      "Données partielles, valeur foncière non disponible"
+    ],
+    "zone_inondable": "non",
+    "milieux_humides": "a_verifier",
+    "batiment_existant": "non",
+    "resume_ia": "Lot vacant en zone mixte. Données incomplètes : valeur foncière manquante au rôle public et présence potentielle de milieux humides à vérifier. À confirmer auprès de la municipalité avant offre d'achat.",
+    "niveau_confiance": "partiel",
+    "date_mise_a_jour": "2026-02-11",
+    "sources": [
+      "Cadastre du Québec",
+      "Atlas des milieux humides, CIC"
+    ]
+  },
+  {
+    "id": "TM-004",
+    "adresse": "752 5e Rue de la Pointe, Shawinigan (QC) G9N 1E5",
+    "numero_lot": "2 314 906",
+    "municipalite": "Shawinigan",
+    "mrc": "Shawinigan",
+    "region": "Mauricie",
+    "superficie_m2": 980,
+    "valeur_fonciere": 162400,
+    "zonage": "Mixte centre-ville (M-1)",
+    "usages_permis": [
+      "Résidentielle multilogement",
+      "Commerce de détail",
+      "Bureau professionnel"
+    ],
+    "contraintes": [
+      "Secteur patrimonial, PIIA applicable"
+    ],
+    "zone_inondable": "non",
+    "milieux_humides": "non",
+    "batiment_existant": "oui",
+    "resume_ia": "Immeuble mixte du centre-ville historique de Shawinigan. Soumis à un Plan d'implantation et d'intégration architecturale (PIIA). Forte densité d'usages permis.",
+    "niveau_confiance": "eleve",
+    "date_mise_a_jour": "2026-05-02",
+    "sources": [
+      "Rôle Shawinigan 2026",
+      "Règlement PIIA Shawinigan"
+    ]
+  },
+  {
+    "id": "TM-005",
+    "adresse": "Chemin du Lac-à-la-Pêche, Shawinigan (Saint-Jean-des-Piles) (QC)",
+    "numero_lot": "2 510 783",
+    "municipalite": "Shawinigan",
+    "mrc": "Shawinigan",
+    "region": "Mauricie",
+    "superficie_m2": 8950,
+    "valeur_fonciere": 74300,
+    "zonage": "Villégiature (V-2)",
+    "usages_permis": [
+      "Chalet",
+      "Résidence saisonnière"
+    ],
+    "contraintes": [
+      "Présence probable de milieux humides",
+      "Bande riveraine 15 m"
+    ],
+    "zone_inondable": "non",
+    "milieux_humides": "a_verifier",
+    "batiment_existant": "non",
+    "resume_ia": "Lot de villégiature à proximité du lac à la Pêche. Présence probable de milieux humides détectée à partir des cartes du CIC. Caractérisation environnementale recommandée avant toute construction.",
+    "niveau_confiance": "moyen",
+    "date_mise_a_jour": "2026-04-05",
+    "sources": [
+      "Atlas des milieux humides, CIC",
+      "Rôle Shawinigan 2026"
+    ]
+  },
+  {
+    "id": "TM-006",
+    "adresse": "Adresse non confirmée, Shawinigan (QC)",
+    "numero_lot": "2 999 001",
+    "municipalite": "Shawinigan",
+    "mrc": "Shawinigan",
+    "region": "Mauricie",
+    "superficie_m2": -250,
+    "valeur_fonciere": 95000,
+    "zonage": "Indéterminé",
+    "usages_permis": [],
+    "contraintes": [
+      "Données incohérentes, à corriger en source"
+    ],
+    "zone_inondable": "a_verifier",
+    "milieux_humides": "a_verifier",
+    "batiment_existant": "non",
+    "resume_ia": "Fiche conservée intentionnellement pour test : superficie négative et zonage indéterminé. Ne doit jamais apparaître dans une recherche utilisateur sans avertissement bloquant.",
+    "niveau_confiance": "faible",
+    "date_mise_a_jour": "2025-11-28",
+    "sources": [
+      "Donnée brute non validée"
+    ]
+  },
+  {
+    "id": "TM-007",
+    "adresse": "1450 chemin Saint-Louis, La Tuque (QC) G9X 3P8",
+    "numero_lot": "5 102 884",
+    "municipalite": "La Tuque",
+    "mrc": "La Tuque",
+    "region": "Mauricie",
+    "superficie_m2": 1500000,
+    "valeur_fonciere": 142000,
+    "zonage": "Forestière (F-1)",
+    "usages_permis": [
+      "Exploitation forestière",
+      "Récréotourisme"
+    ],
+    "contraintes": [
+      "Distance importante des services",
+      "Accès chemin forestier privé"
+    ],
+    "zone_inondable": "non",
+    "milieux_humides": "non",
+    "batiment_existant": "non",
+    "resume_ia": "Très grand lot forestier de 150 hectares dans l'Agglomération de La Tuque. Usage forestier dominant. Faible densité de services à proximité.",
+    "niveau_confiance": "eleve",
+    "date_mise_a_jour": "2026-01-30",
+    "sources": [
+      "Rôle La Tuque 2026",
+      "MFFP, Couvert forestier"
+    ]
+  },
+  {
+    "id": "TM-008",
+    "adresse": "Secteur Parent, La Tuque (QC)",
+    "numero_lot": "5 244 117",
+    "municipalite": "La Tuque",
+    "mrc": "La Tuque",
+    "region": "Mauricie",
+    "superficie_m2": 22000,
+    "valeur_fonciere": 18500,
+    "zonage": "Rurale (RU-3)",
+    "usages_permis": [],
+    "contraintes": [
+      "Usages permis non documentés",
+      "Service municipal limité"
+    ],
+    "zone_inondable": "non",
+    "milieux_humides": "a_verifier",
+    "batiment_existant": "non",
+    "resume_ia": "Terrain rural dans le secteur Parent. Les usages permis ne sont pas documentés dans les données ouvertes consultées. Validation directe auprès du service de l'urbanisme requise.",
+    "niveau_confiance": "partiel",
+    "date_mise_a_jour": "2026-03-09",
+    "sources": [
+      "Rôle La Tuque 2026"
+    ]
+  },
+  {
+    "id": "TM-009",
+    "adresse": "Rang Saint-Joseph, Louiseville (QC) J5V 2L3",
+    "numero_lot": "3 016 558",
+    "municipalite": "Louiseville",
+    "mrc": "Maskinongé",
+    "region": "Mauricie",
+    "superficie_m2": 64500,
+    "valeur_fonciere": 121300,
+    "zonage": "Agricole (A-1)",
+    "usages_permis": [
+      "Production agricole",
+      "Résidence du producteur"
+    ],
+    "contraintes": [
+      "Zone agricole permanente CPTAQ",
+      "Aucune subdivision sans autorisation"
+    ],
+    "zone_inondable": "non",
+    "milieux_humides": "non",
+    "batiment_existant": "oui",
+    "resume_ia": "Terre agricole de 6,45 ha protégée par la Loi sur la protection du territoire et des activités agricoles. Toute conversion d'usage exige une autorisation de la CPTAQ.",
+    "niveau_confiance": "eleve",
+    "date_mise_a_jour": "2026-04-12",
+    "sources": [
+      "CPTAQ, Zonage agricole",
+      "Rôle Louiseville 2026"
+    ]
+  },
+  {
+    "id": "TM-010",
+    "adresse": "212 rue du Manoir, Saint-Léon-le-Grand (QC) J0K 2W0",
+    "numero_lot": "3 122 045",
+    "municipalite": "Saint-Léon-le-Grand",
+    "mrc": "Maskinongé",
+    "region": "Mauricie",
+    "superficie_m2": 3200,
+    "valeur_fonciere": 87900,
+    "zonage": "Résidentielle (H-1)",
+    "usages_permis": [
+      "Résidentielle unifamiliale"
+    ],
+    "contraintes": [],
+    "zone_inondable": "non",
+    "milieux_humides": "non",
+    "batiment_existant": "oui",
+    "resume_ia": "Résidence de village dans la MRC de Maskinongé. Aucune contrainte particulière identifiée. Données complètes.",
+    "niveau_confiance": "eleve",
+    "date_mise_a_jour": "2026-05-18",
+    "sources": [
+      "Rôle Saint-Léon-le-Grand 2026"
+    ]
+  },
+  {
+    "id": "TM-011",
+    "adresse": "27 chemin du Fleuve, Sainte-Anne-de-la-Pérade (QC) G0X 2J0",
+    "numero_lot": "4 401 230",
+    "municipalite": "Sainte-Anne-de-la-Pérade",
+    "mrc": "Les Chenaux",
+    "region": "Mauricie",
+    "superficie_m2": 2750,
+    "valeur_fonciere": 215600,
+    "zonage": "Résidentielle riveraine (H-R)",
+    "usages_permis": [
+      "Résidentielle unifamiliale",
+      "Quai privé sous condition"
+    ],
+    "contraintes": [
+      "Bande riveraine 10-15 m",
+      "Plaine inondable récurrence 20-100 ans"
+    ],
+    "zone_inondable": "oui",
+    "milieux_humides": "non",
+    "batiment_existant": "oui",
+    "resume_ia": "Terrain riverain du Saint-Laurent. Présence en plaine inondable de récurrence 20-100 ans : la construction et la rénovation sont possibles mais encadrées. Bande riveraine à respecter.",
+    "niveau_confiance": "eleve",
+    "date_mise_a_jour": "2026-04-29",
+    "sources": [
+      "MELCCFP, Zones inondables",
+      "Politique de protection des rives QC"
+    ]
+  },
+  {
+    "id": "TM-012",
+    "adresse": "Rue Principale, Batiscan (QC) G0X 1A0",
+    "numero_lot": "4 412 880",
+    "municipalite": "Batiscan",
+    "mrc": "Les Chenaux",
+    "region": "Mauricie",
+    "superficie_m2": 1100,
+    "valeur_fonciere": null,
+    "zonage": "Mixte (M-2)",
+    "usages_permis": [
+      "Résidentielle",
+      "Commerce léger"
+    ],
+    "contraintes": [
+      "Valeur foncière non disponible"
+    ],
+    "zone_inondable": "non",
+    "milieux_humides": "non",
+    "batiment_existant": "oui",
+    "resume_ia": "Bâtiment mixte dans le village de Batiscan. Valeur foncière indisponible au rôle public consulté. Le reste des données est cohérent.",
+    "niveau_confiance": "partiel",
+    "date_mise_a_jour": "2026-02-25",
+    "sources": [
+      "Rôle Batiscan 2026"
+    ]
+  },
+  {
+    "id": "TM-013",
+    "adresse": "Chemin de la Rivière, Saint-Roch-de-Mékinac (QC) G0X 2E0",
+    "numero_lot": "6 088 410",
+    "municipalite": "Saint-Roch-de-Mékinac",
+    "mrc": "Mékinac",
+    "region": "Mauricie",
+    "superficie_m2": 38000,
+    "valeur_fonciere": 41200,
+    "zonage": "Forestière (F-2)",
+    "usages_permis": [
+      "Exploitation forestière",
+      "Chalet sous condition"
+    ],
+    "contraintes": [
+      "Pente forte sur partie sud",
+      "Accès saisonnier"
+    ],
+    "zone_inondable": "non",
+    "milieux_humides": "non",
+    "batiment_existant": "non",
+    "resume_ia": "Lot forestier de 3,8 ha en bordure de rivière. Forte pente sur une partie du terrain. Construction d'un chalet possible sous conditions du règlement de zonage.",
+    "niveau_confiance": "moyen",
+    "date_mise_a_jour": "2026-03-01",
+    "sources": [
+      "Rôle Saint-Roch-de-Mékinac 2026",
+      "MFFP, Pente terrain"
+    ]
+  },
+  {
+    "id": "TM-014",
+    "adresse": "445 rue Notre-Dame, Saint-Tite (QC) G0X 3H0",
+    "numero_lot": "6 122 905",
+    "municipalite": "Saint-Tite",
+    "mrc": "Mékinac",
+    "region": "Mauricie",
+    "superficie_m2": 1450,
+    "valeur_fonciere": 132700,
+    "zonage": "Indéterminé, mention contradictoire entre plan et règlement",
+    "usages_permis": [
+      "Résidentielle",
+      "Commerce de détail"
+    ],
+    "contraintes": [
+      "Zonage à clarifier auprès de la municipalité"
+    ],
+    "zone_inondable": "non",
+    "milieux_humides": "non",
+    "batiment_existant": "oui",
+    "resume_ia": "Le plan de zonage et le règlement municipal indiquent des classes différentes pour ce lot. Clarification requise avant toute décision d'investissement.",
+    "niveau_confiance": "faible",
+    "date_mise_a_jour": "2026-01-15",
+    "sources": [
+      "Rôle Saint-Tite 2026",
+      "Règlement de zonage Saint-Tite"
+    ]
+  },
+  {
+    "id": "TM-015",
+    "adresse": "910 rue King Ouest, Sherbrooke (QC) J1H 1S2",
+    "numero_lot": "9 800 112",
+    "municipalite": "Sherbrooke",
+    "mrc": "Sherbrooke",
+    "region": "Estrie",
+    "superficie_m2": 580,
+    "valeur_fonciere": 312000,
+    "zonage": "Résidentielle (H-2)",
+    "usages_permis": [
+      "Résidentielle unifamiliale"
+    ],
+    "contraintes": [],
+    "zone_inondable": "non",
+    "milieux_humides": "non",
+    "batiment_existant": "oui",
+    "resume_ia": "Fiche hors région Mauricie (Estrie). Conservée pour tester le rejet automatique des terrains hors périmètre couvert par TerraMauricie.",
+    "niveau_confiance": "eleve",
+    "date_mise_a_jour": "2026-04-01",
+    "sources": [
+      "Rôle Sherbrooke 2026"
+    ]
+  }
+]

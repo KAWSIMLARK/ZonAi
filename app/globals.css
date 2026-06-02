@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    @apply bg-canvas text-ink font-sans;
+  }
+
+  ::selection {
+    background: rgba(10, 110, 79, 0.18);
+  }
+}
+
+@layer components {
+  .container-tight {
+    @apply mx-auto w-full max-w-5xl px-6;
+  }
+  .container-wide {
+    @apply mx-auto w-full max-w-[1280px] px-6;
+  }
+
+  .pill {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-line bg-surface px-2.5 py-1 text-xs font-medium tracking-tight text-ink-soft;
+  }
+  .pill-warn  { @apply border-warn/30 bg-warn-wash text-warn; }
+  .pill-danger{ @apply border-danger/30 bg-danger-wash text-danger; }
+  .pill-ok    { @apply border-ok/30 bg-ok-wash text-ok; }
+  .pill-info  { @apply border-info/30 bg-info-wash text-info; }
+  .pill-accent{ @apply border-accent/30 bg-accent-wash text-accent-deep; }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium transition duration-200 ease-editorial focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/30 active:translate-y-px;
+  }
+  .btn-primary {
+    @apply btn bg-ink text-canvas hover:bg-accent-deep;
+  }
+  .btn-secondary {
+    @apply btn border border-line bg-surface text-ink hover:border-line-strong;
+  }
+  .btn-ghost {
+    @apply btn text-ink-mute hover:text-ink;
+  }
+
+  .card {
+    @apply rounded-2xl border border-line bg-surface shadow-card transition-shadow duration-300 ease-editorial;
+  }
+  .card-interactive {
+    @apply card hover:shadow-card-hover;
+  }
+
+  .label-eyebrow {
+    @apply font-mono text-[11px] uppercase tracking-[0.16em] text-ink-faint;
+  }
+
+  .hairline { @apply h-px w-full bg-line; }
+}

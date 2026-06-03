@@ -26,6 +26,7 @@ import { geocode as geocodeNominatim } from "../lib/sources/nominatim.mjs";
 import { geocode as geocodeAQ } from "../lib/sources/adresses-quebec.mjs";
 import { inondationFor } from "../lib/sources/melccfp-inondation.mjs";
 import { cptaqFor } from "../lib/sources/cptaq.mjs";
+import { milieuxHumidesFor } from "../lib/sources/milieux-humides.mjs";
 import { zonageTroisRivieresFor } from "../lib/sources/zonage-trois-rivieres.mjs";
 import { lookup } from "../lib/sources/aggregator.mjs";
 
@@ -78,6 +79,7 @@ const POINTS = {
   LOUISEVILLE_RURAL: { lat: 46.27, lon: -73.00 }, // rang agricole
   SAINT_TITE_RURAL: { lat: 46.74, lon: -72.57 },
   SHERBROOKE: { lat: 45.398, lon: -71.902 },
+  HUMIDE_TR_VERIFIE: { lat: 46.30329, lon: -72.47847 }, // centroid d'un polygone CIC
 };
 
 // ══════════════════════════════════════════════════════════════════════════
@@ -217,21 +219,39 @@ await test("La Tuque centre ⇒ non inondable", async () => {
   assertEqual(r.inondable, "non");
 });
 
+category("Milieux humides CIC");
+await test("Polygone humide connu ⇒ humide oui + classe", async () => {
+  const r = await milieuxHumidesFor(POINTS.HUMIDE_TR_VERIFIE.lat, POINTS.HUMIDE_TR_VERIFIE.lon);
+  assertEqual(r.humide, "oui");
+  assert(r.classe_libelle, "Libellé de classe manquant");
+  assert(r.contraintes.length > 0);
+}, { critical: true });
+await test("Centre urbain Trois-Rivières ⇒ non humide", async () => {
+  const r = await milieuxHumidesFor(POINTS.TR_RUE_NOTRE_DAME_OUEST.lat, POINTS.TR_RUE_NOTRE_DAME_OUEST.lon);
+  assertEqual(r.humide, "non");
+});
+
 // ══════════════════════════════════════════════════════════════════════════
 // D. Aggregator end-to-end (live)
 // ══════════════════════════════════════════════════════════════════════════
 section("D. Aggregator live");
 
-await test("Trois-Rivières urbaine ⇒ status ok, 4 couches", async () => {
+await test("Trois-Rivières urbaine ⇒ status ok, 5 couches", async () => {
   const r = await lookup("1875 rue Notre-Dame Trois-Rivières");
   assertEqual(r.status, "ok");
   assert(r.parcel, "Pas de parcel");
   assertEqual(r.parcel.region, "Mauricie");
-  assert(r.layers.length >= 3, `Trop peu de couches : ${r.layers.length}`);
+  assert(r.layers.length >= 5, `Trop peu de couches : ${r.layers.length}`);
   const names = r.layers.map((l) => l.name);
-  assert(names.includes("ADRESSES_QUEBEC"));
-  assert(names.includes("MELCCFP_INONDATION"));
-  assert(names.includes("CPTAQ_ZONAGE"));
+  for (const n of [
+    "ADRESSES_QUEBEC",
+    "MELCCFP_INONDATION",
+    "CPTAQ_ZONAGE",
+    "CIC_MILIEUX_HUMIDES",
+    "TROIS_RIVIERES_ZONAGE",
+  ]) {
+    assert(names.includes(n), `Couche manquante : ${n}`);
+  }
 }, { critical: true });
 
 await test("Sherbrooke ⇒ status out_of_region", async () => {
@@ -311,6 +331,7 @@ md += `| Adresses Québec (MRNF) | ArcGIS GeocodeServer public | Québec entier 
 md += `| OpenStreetMap Nominatim | API publique, fallback | Mondial |\n`;
 md += `| MELCCFP BDZI | ArcGIS REST MapServer public | Québec entier |\n`;
 md += `| CPTAQ Déméter | Shapefile officiel, snapshot mai 2026, clipé Mauricie | Mauricie (275 polygones) |\n`;
+md += `| Canards Illimités Canada, milieux humides 2022 | ArcGIS REST public | Sud du Québec habité, 34 512 polygones bbox Mauricie |\n`;
 md += `| Ville de Trois-Rivières, zonage municipal | Données ouvertes Données Québec, snapshot | Trois-Rivières (1 663 zones) |\n\n`;
 
 md += `## Résultats par section\n\n`;

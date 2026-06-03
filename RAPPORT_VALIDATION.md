@@ -1,6 +1,6 @@
 # Rapport de validation — TerraMauricie (mode live)
 
-*Généré le 2026-06-03T01:15:07.052Z · 30 tests · 30 réussis · 0 échoués · 0 échecs critiques · 794 ms*
+*Généré le 2026-06-03T01:35:07.184Z · 32 tests · 32 réussis · 0 échoués · 0 échecs critiques · 1895 ms*
 
 ## Mode
 
@@ -18,6 +18,7 @@ Les données mock ont été supprimées. La suite teste maintenant :
 | OpenStreetMap Nominatim | API publique, fallback | Mondial |
 | MELCCFP BDZI | ArcGIS REST MapServer public | Québec entier |
 | CPTAQ Déméter | Shapefile officiel, snapshot mai 2026, clipé Mauricie | Mauricie (275 polygones) |
+| Canards Illimités Canada, milieux humides 2022 | ArcGIS REST public | Sud du Québec habité, 34 512 polygones bbox Mauricie |
 | Ville de Trois-Rivières, zonage municipal | Données ouvertes Données Québec, snapshot | Trois-Rivières (1 663 zones) |
 
 ## Résultats par section
@@ -93,13 +94,20 @@ Les données mock ont été supprimées. La suite teste maintenant :
 | ✅ | Point bord du fleuve ⇒ inondable oui | 🔒 |  |
 | ✅ | La Tuque centre ⇒ non inondable |  |  |
 
-### D. Aggregator live
-
-#### MELCCFP zones inondables
+#### Milieux humides CIC
 
 | Statut | Test | Critique | Détail |
 |:---:|---|:---:|---|
-| ✅ | Trois-Rivières urbaine ⇒ status ok, 4 couches | 🔒 |  |
+| ✅ | Polygone humide connu ⇒ humide oui + classe | 🔒 |  |
+| ✅ | Centre urbain Trois-Rivières ⇒ non humide |  |  |
+
+### D. Aggregator live
+
+#### Milieux humides CIC
+
+| Statut | Test | Critique | Détail |
+|:---:|---|:---:|---|
+| ✅ | Trois-Rivières urbaine ⇒ status ok, 5 couches | 🔒 |  |
 | ✅ | Sherbrooke ⇒ status out_of_region | 🔒 |  |
 | ✅ | Requête vide ⇒ status needs_clarification | 🔒 |  |
 | ✅ | Trois-Rivières inclut couche zonage municipal |  |  |

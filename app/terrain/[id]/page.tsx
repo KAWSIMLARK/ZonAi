@@ -7,7 +7,33 @@ import { ConstraintBadges } from "@/components/ConstraintBadges";
 import { WarningBanner } from "@/components/WarningBanner";
 import { formatArea, formatCurrency, formatDate, ternaryLabel } from "@/lib/format";
 import type { Parcel, Warning } from "@/lib/types";
-import { ArrowLeft } from "@phosphor-icons/react/dist/ssr";
+import { ArrowLeft, Buildings, House } from "@phosphor-icons/react/dist/ssr";
+
+interface RoleData {
+  trouve?: boolean;
+  matricule?: string;
+  distance_m?: number;
+  front_terrain_m?: number | null;
+  superficie_terrain_m2?: number | null;
+  nombre_etages_max?: number | null;
+  annee_construction?: number | null;
+  aire_etage_m2?: number | null;
+  nombre_logements?: number | null;
+  nombre_chambres_locatives?: number | null;
+  nombre_locaux_non_residentiels?: number | null;
+  valeur_terrain?: number | null;
+  valeur_batiments?: number | null;
+  valeur_totale?: number | null;
+  usage_principal?: string | null;
+  usages_secondaires?: string[];
+  cubf_codes?: string[];
+}
+
+interface PotentielData {
+  fourchette_logements?: { min: number; max: number };
+  classes?: Array<{ label: string; min: number; max: number }>;
+  logements_actuels?: number | null;
+}
 
 interface PageProps {
   params: { id: string };
@@ -25,13 +51,19 @@ export default async function TerrainPage({ params, searchParams }: PageProps) {
 
   const result = (await lookup(q)) as {
     status: string;
-    parcel?: Parcel & { _layers?: Array<{ name: string; status: string; source: string; message?: string }> };
+    parcel?: Parcel & {
+      _layers?: Array<{ name: string; status: string; source: string; message?: string }>;
+      _role?: RoleData;
+      _potentiel?: PotentielData | null;
+    };
   };
   if (result.status !== "ok" || !result.parcel) notFound();
 
   const parcel = result.parcel;
   const warnings = deriveWarnings(parcel) as Warning[];
   const layers = parcel._layers ?? [];
+  const role = parcel._role;
+  const potentiel = parcel._potentiel ?? null;
 
   return (
     <div className="container-tight py-12">
@@ -119,6 +151,118 @@ export default async function TerrainPage({ params, searchParams }: PageProps) {
           </dl>
         </aside>
       </section>
+
+      {/* Bâtiment et rôle d'évaluation */}
+      {role && role.trouve && (
+        <section className="mt-10 grid gap-6 md:grid-cols-[1.4fr_0.6fr]">
+          <div className="card p-7">
+            <div className="flex items-center gap-2">
+              <Buildings size={18} weight="duotone" className="text-accent-deep" />
+              <p className="text-xs font-mono uppercase tracking-wider text-ink-faint">
+                Bâtiment et rôle d'évaluation
+              </p>
+            </div>
+            <dl className="mt-5 grid grid-cols-2 gap-x-6 gap-y-4 text-sm md:grid-cols-3">
+              {role.annee_construction != null && (
+                <div>
+                  <dt className="text-xs text-ink-faint">Année construction</dt>
+                  <dd className="mt-1 text-lg font-medium tabular-nums">{role.annee_construction}</dd>
+                </div>
+              )}
+              {role.nombre_etages_max != null && (
+                <div>
+                  <dt className="text-xs text-ink-faint">Nb d'étages max</dt>
+                  <dd className="mt-1 text-lg font-medium tabular-nums">{role.nombre_etages_max}</dd>
+                </div>
+              )}
+              {role.aire_etage_m2 != null && (
+                <div>
+                  <dt className="text-xs text-ink-faint">Aire d'étage</dt>
+                  <dd className="mt-1 text-lg font-medium tabular-nums">{formatArea(role.aire_etage_m2)}</dd>
+                </div>
+              )}
+              {role.front_terrain_m != null && (
+                <div>
+                  <dt className="text-xs text-ink-faint">Front sur rue</dt>
+                  <dd className="mt-1 text-lg font-medium tabular-nums">{role.front_terrain_m.toFixed(1)} m</dd>
+                </div>
+              )}
+              {role.nombre_locaux_non_residentiels != null && (
+                <div>
+                  <dt className="text-xs text-ink-faint">Locaux non résidentiels</dt>
+                  <dd className="mt-1 text-lg font-medium tabular-nums">{role.nombre_locaux_non_residentiels}</dd>
+                </div>
+              )}
+              {role.nombre_chambres_locatives != null && (
+                <div>
+                  <dt className="text-xs text-ink-faint">Chambres locatives</dt>
+                  <dd className="mt-1 text-lg font-medium tabular-nums">{role.nombre_chambres_locatives}</dd>
+                </div>
+              )}
+            </dl>
+            <div className="hairline my-5" />
+            <dl className="grid grid-cols-3 gap-x-6 gap-y-3 text-sm">
+              {role.valeur_terrain != null && (
+                <div>
+                  <dt className="text-xs text-ink-faint">Valeur terrain</dt>
+                  <dd className="mt-1 font-medium tabular-nums">{formatCurrency(role.valeur_terrain)}</dd>
+                </div>
+              )}
+              {role.valeur_batiments != null && (
+                <div>
+                  <dt className="text-xs text-ink-faint">Valeur bâtiments</dt>
+                  <dd className="mt-1 font-medium tabular-nums">{formatCurrency(role.valeur_batiments)}</dd>
+                </div>
+              )}
+              {role.valeur_totale != null && (
+                <div>
+                  <dt className="text-xs text-ink-faint">Valeur totale</dt>
+                  <dd className="mt-1 font-medium tabular-nums">{formatCurrency(role.valeur_totale)}</dd>
+                </div>
+              )}
+            </dl>
+            <p className="mt-5 text-xs text-ink-faint">
+              Matricule {role.matricule}, unité au rôle 2026 trouvée à {role.distance_m} m du point géocodé.
+            </p>
+          </div>
+
+          {/* Capacité résidentielle */}
+          <aside className="card p-6">
+            <div className="flex items-center gap-2">
+              <House size={18} weight="duotone" className="text-accent-deep" />
+              <p className="text-xs font-mono uppercase tracking-wider text-ink-faint">
+                Capacité résidentielle
+              </p>
+            </div>
+            <div className="mt-4 space-y-3 text-sm">
+              <div className="flex items-baseline justify-between">
+                <span className="text-ink-mute">Logements actuels (rôle)</span>
+                <span className="text-2xl font-semibold tabular-nums">
+                  {role.nombre_logements ?? <span className="text-base text-ink-faint">Aucun</span>}
+                </span>
+              </div>
+              {potentiel && potentiel.fourchette_logements && (
+                <div className="rounded-xl border border-line bg-canvas/60 p-3">
+                  <p className="text-xs text-ink-faint">Permis selon la classe d'utilisation</p>
+                  <p className="mt-1 text-base font-medium">
+                    {potentiel.fourchette_logements.min === potentiel.fourchette_logements.max
+                      ? `${potentiel.fourchette_logements.min} logement${potentiel.fourchette_logements.min > 1 ? "s" : ""}`
+                      : `${potentiel.fourchette_logements.min} à ${potentiel.fourchette_logements.max} logements`}
+                  </p>
+                  {potentiel.classes && potentiel.classes[0] && (
+                    <p className="mt-1 text-xs text-ink-mute">{potentiel.classes[0].label}</p>
+                  )}
+                </div>
+              )}
+              {!potentiel && role.usage_principal && (
+                <p className="text-xs text-ink-mute">
+                  Densité maximale selon le règlement de zonage municipal, non disponible en API ouverte. À consulter au PDF de zonage de la municipalité.
+                </p>
+              )}
+            </div>
+          </aside>
+        </section>
+      )}
 
       <section className="mt-10 grid gap-6 md:grid-cols-2">
         <div className="card p-6">

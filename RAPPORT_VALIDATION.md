@@ -1,6 +1,6 @@
 # Rapport de validation — TerraMauricie (mode live)
 
-*Généré le 2026-06-03T01:35:07.184Z · 32 tests · 32 réussis · 0 échoués · 0 échecs critiques · 1895 ms*
+*Généré le 2026-06-03T02:06:46.862Z · 36 tests · 36 réussis · 0 échoués · 0 échecs critiques · 1983 ms*
 
 ## Mode
 
@@ -19,6 +19,7 @@ Les données mock ont été supprimées. La suite teste maintenant :
 | MELCCFP BDZI | ArcGIS REST MapServer public | Québec entier |
 | CPTAQ Déméter | Shapefile officiel, snapshot mai 2026, clipé Mauricie | Mauricie (275 polygones) |
 | Canards Illimités Canada, milieux humides 2022 | ArcGIS REST public | Sud du Québec habité, 34 512 polygones bbox Mauricie |
+| MAMH, rôle d'évaluation foncière géoréférencé 2026 | GPKG provincial 2.6 GB, extrait Mauricie 4.3 MB | 121 915 unités d'évaluation (31 codes municipaux) |
 | Ville de Trois-Rivières, zonage municipal | Données ouvertes Données Québec, snapshot | Trois-Rivières (1 663 zones) |
 
 ## Résultats par section
@@ -101,13 +102,22 @@ Les données mock ont été supprimées. La suite teste maintenant :
 | ✅ | Polygone humide connu ⇒ humide oui + classe | 🔒 |  |
 | ✅ | Centre urbain Trois-Rivières ⇒ non humide |  |  |
 
-### D. Aggregator live
-
-#### Milieux humides CIC
+#### Rôle d'évaluation foncière 2026
 
 | Statut | Test | Critique | Détail |
 |:---:|---|:---:|---|
-| ✅ | Trois-Rivières urbaine ⇒ status ok, 5 couches | 🔒 |  |
+| ✅ | Adresse TR connue ⇒ unité d'évaluation trouvée avec valeur | 🔒 |  |
+| ✅ | Adresse Louiseville ⇒ logements rapportés |  |  |
+| ✅ | inferPotentielResidentiel sur CUBF 1212 (bifamiliale) |  |  |
+| ✅ | inferPotentielResidentiel sur CUBF 1215 (4-6 logements) |  |  |
+
+### D. Aggregator live
+
+#### Rôle d'évaluation foncière 2026
+
+| Statut | Test | Critique | Détail |
+|:---:|---|:---:|---|
+| ✅ | Trois-Rivières urbaine ⇒ status ok, 6 couches | 🔒 |  |
 | ✅ | Sherbrooke ⇒ status out_of_region | 🔒 |  |
 | ✅ | Requête vide ⇒ status needs_clarification | 🔒 |  |
 | ✅ | Trois-Rivières inclut couche zonage municipal |  |  |

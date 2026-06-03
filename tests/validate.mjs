@@ -28,6 +28,7 @@ import { inondationFor } from "../lib/sources/melccfp-inondation.mjs";
 import { cptaqFor } from "../lib/sources/cptaq.mjs";
 import { milieuxHumidesFor } from "../lib/sources/milieux-humides.mjs";
 import { zonageTroisRivieresFor } from "../lib/sources/zonage-trois-rivieres.mjs";
+import { roleFor, inferPotentielResidentiel } from "../lib/sources/role-evaluation.mjs";
 import { lookup } from "../lib/sources/aggregator.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -231,27 +232,60 @@ await test("Centre urbain Trois-Rivières ⇒ non humide", async () => {
   assertEqual(r.humide, "non");
 });
 
+category("Rôle d'évaluation foncière 2026");
+await test("Adresse TR connue ⇒ unité d'évaluation trouvée avec valeur", async () => {
+  const r = await roleFor(46.3460, -72.5638);
+  assert(r.trouve, "Pas d'unité trouvée");
+  assert(r.matricule, "Matricule manquant");
+  assert(r.valeur_totale && r.valeur_totale > 0, `Valeur totale manquante : ${r.valeur_totale}`);
+  assert(r.distance_m < 500, `Distance match trop grande : ${r.distance_m} m`);
+}, { critical: true });
+
+await test("Adresse Louiseville ⇒ logements rapportés", async () => {
+  const r = await roleFor(46.27, -73.00);
+  assert(r.trouve, "Pas d'unité Louiseville");
+  // Cette zone rurale doit avoir un bâtiment résidentiel typique
+  assert(r.annee_construction || r.nombre_logements, "Aucune donnée de bâtiment");
+});
+
+await test("inferPotentielResidentiel sur CUBF 1212 (bifamiliale)", () => {
+  const p = inferPotentielResidentiel(["1212"], 1);
+  assert(p, "Pas de potentiel renvoyé");
+  assertEqual(p.fourchette_logements.max, 2);
+});
+
+await test("inferPotentielResidentiel sur CUBF 1215 (4-6 logements)", () => {
+  const p = inferPotentielResidentiel(["1215"], 4);
+  assert(p, "Pas de potentiel renvoyé");
+  assertEqual(p.fourchette_logements.min, 4);
+  assertEqual(p.fourchette_logements.max, 6);
+});
+
 // ══════════════════════════════════════════════════════════════════════════
 // D. Aggregator end-to-end (live)
 // ══════════════════════════════════════════════════════════════════════════
 section("D. Aggregator live");
 
-await test("Trois-Rivières urbaine ⇒ status ok, 5 couches", async () => {
+await test("Trois-Rivières urbaine ⇒ status ok, 6 couches", async () => {
   const r = await lookup("1875 rue Notre-Dame Trois-Rivières");
   assertEqual(r.status, "ok");
   assert(r.parcel, "Pas de parcel");
   assertEqual(r.parcel.region, "Mauricie");
-  assert(r.layers.length >= 5, `Trop peu de couches : ${r.layers.length}`);
+  assert(r.layers.length >= 6, `Trop peu de couches : ${r.layers.length}`);
   const names = r.layers.map((l) => l.name);
   for (const n of [
     "ADRESSES_QUEBEC",
     "MELCCFP_INONDATION",
     "CPTAQ_ZONAGE",
     "CIC_MILIEUX_HUMIDES",
+    "ROLE_EVALUATION_2026",
     "TROIS_RIVIERES_ZONAGE",
   ]) {
     assert(names.includes(n), `Couche manquante : ${n}`);
   }
+  // Vérifier que le parcel a la valeur foncière et les logements
+  assert(r.parcel.valeur_fonciere && r.parcel.valeur_fonciere > 0, "Valeur foncière manquante");
+  assert(r.parcel._role && r.parcel._role.matricule, "Matricule manquant");
 }, { critical: true });
 
 await test("Sherbrooke ⇒ status out_of_region", async () => {
@@ -332,6 +366,7 @@ md += `| OpenStreetMap Nominatim | API publique, fallback | Mondial |\n`;
 md += `| MELCCFP BDZI | ArcGIS REST MapServer public | Québec entier |\n`;
 md += `| CPTAQ Déméter | Shapefile officiel, snapshot mai 2026, clipé Mauricie | Mauricie (275 polygones) |\n`;
 md += `| Canards Illimités Canada, milieux humides 2022 | ArcGIS REST public | Sud du Québec habité, 34 512 polygones bbox Mauricie |\n`;
+md += `| MAMH, rôle d'évaluation foncière géoréférencé 2026 | GPKG provincial 2.6 GB, extrait Mauricie 4.3 MB | 121 915 unités d'évaluation (31 codes municipaux) |\n`;
 md += `| Ville de Trois-Rivières, zonage municipal | Données ouvertes Données Québec, snapshot | Trois-Rivières (1 663 zones) |\n\n`;
 
 md += `## Résultats par section\n\n`;

@@ -53,9 +53,29 @@ interface ZonageMuniData {
   categorie?: string;
   id_zone?: string | null;
   zonage?: string;
-  usages_permis?: string[];
+  usages_permis?: Array<{ code: string; libelle: string; etages?: [number, number] }> | string[];
+  potentiel_residentiel?: {
+    logements_max?: number | null;
+    classes_h_permises?: Array<{ code: string; libelle: string; min: number; max: number | null }>;
+    h12_max?: number | null;
+    h13_max?: number | null;
+  };
+  normes?: {
+    hauteur_min_m?: number | null;
+    hauteur_max_m?: number | null;
+    etages_min?: number | null;
+    etages_max?: number | null;
+    lot_largeur_min_m?: number | null;
+    lot_profondeur_min_m?: number | null;
+    lot_superficie_min_m2?: number | null;
+    ces_min?: number | null;
+    ces_max?: number | null;
+    piia?: boolean;
+    pae?: boolean;
+    dispositions_speciales?: string[];
+  };
   reglement_url?: string;
-  note_sous_zone?: string;
+  grille_url?: string;
 }
 
 interface SubdivisionData {
@@ -259,7 +279,7 @@ export default async function TerrainPage({ params, searchParams }: PageProps) {
             </p>
           </div>
 
-          {/* Capacité résidentielle : actuel vs permis */}
+          {/* Capacité résidentielle : actuel vs permis (selon règlement officiel) */}
           <aside className="card p-6">
             <div className="flex items-center gap-2">
               <House size={18} weight="duotone" className="text-accent-deep" />
@@ -281,18 +301,25 @@ export default async function TerrainPage({ params, searchParams }: PageProps) {
               </div>
               <div className="rounded-xl border border-accent/30 bg-accent-wash/40 p-3">
                 <p className="text-[10px] font-mono uppercase tracking-wider text-accent-deep/70">
-                  Permis (estimé)
+                  Permis (règlement)
                 </p>
-                {potentiel && potentiel.fourchette_logements ? (
+                {zonageMuni?.potentiel_residentiel?.logements_max ? (
+                  <>
+                    <p className="mt-1 text-2xl font-semibold tabular-nums text-accent-deep">
+                      {zonageMuni.potentiel_residentiel.logements_max >= 999
+                        ? "49+"
+                        : zonageMuni.potentiel_residentiel.logements_max}
+                    </p>
+                    <p className="text-xs text-ink-mute">logements max</p>
+                  </>
+                ) : potentiel?.fourchette_logements ? (
                   <>
                     <p className="mt-1 text-2xl font-semibold tabular-nums text-accent-deep">
                       {potentiel.fourchette_logements.min === potentiel.fourchette_logements.max
                         ? potentiel.fourchette_logements.min
                         : `${potentiel.fourchette_logements.min}–${potentiel.fourchette_logements.max === 999 ? "+" : potentiel.fourchette_logements.max}`}
                     </p>
-                    <p className="text-xs text-ink-mute">
-                      {potentiel.inferred ? "selon usage actuel" : "selon classe CUBF"}
-                    </p>
+                    <p className="text-xs text-ink-mute">selon usage</p>
                   </>
                 ) : (
                   <>
@@ -313,23 +340,137 @@ export default async function TerrainPage({ params, searchParams }: PageProps) {
                 <p className="text-[10px] font-mono uppercase tracking-wider text-accent-deep/70">
                   Étages permis
                 </p>
-                <p className="mt-1 text-xl font-semibold text-ink-faint">
-                  voir<br />règlement
-                </p>
+                {zonageMuni?.normes?.etages_max != null ? (
+                  <>
+                    <p className="mt-1 text-2xl font-semibold tabular-nums text-accent-deep">
+                      {zonageMuni.normes.etages_min === zonageMuni.normes.etages_max
+                        ? zonageMuni.normes.etages_max
+                        : `${zonageMuni.normes.etages_min ?? 1}–${zonageMuni.normes.etages_max}`}
+                    </p>
+                    <p className="text-xs text-ink-mute">
+                      hauteur {zonageMuni.normes.hauteur_max_m ?? "?"} m max
+                    </p>
+                  </>
+                ) : (
+                  <p className="mt-1 text-xl font-semibold text-ink-faint">
+                    voir<br />règlement
+                  </p>
+                )}
               </div>
             </div>
-            {zonageMuni?.reglement_url && (
+
+            {/* Classes H permises avec libellés exacts */}
+            {zonageMuni?.potentiel_residentiel?.classes_h_permises &&
+              zonageMuni.potentiel_residentiel.classes_h_permises.length > 0 && (
+                <div className="mt-4 rounded-xl border border-line bg-canvas/40 p-3">
+                  <p className="text-[10px] font-mono uppercase tracking-wider text-ink-faint">
+                    Classes d'habitation permises
+                  </p>
+                  <ul className="mt-2 space-y-1 text-xs text-ink-soft">
+                    {zonageMuni.potentiel_residentiel.classes_h_permises.map((c) => (
+                      <li key={c.code} className="flex items-baseline justify-between gap-2">
+                        <span>
+                          <span className="font-mono text-accent-deep">{c.code}</span> {c.libelle}
+                        </span>
+                        <span className="font-mono text-[10px] text-ink-faint">
+                          {c.max === c.min ? `${c.max} log` : `${c.min}–${c.max ?? "?"} log`}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+            {zonageMuni?.grille_url && zonageMuni?.id_zone && (
               <a
-                href={zonageMuni.reglement_url}
+                href={zonageMuni.grille_url}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-4 inline-flex items-center gap-1.5 text-xs text-accent-deep hover:underline"
               >
                 <ArrowSquareOut size={12} weight="bold" />
-                Règlement de zonage (PDF) pour zone {zonageMuni.id_zone}
+                Grille de spécifications zone {zonageMuni.id_zone} (PDF)
               </a>
             )}
           </aside>
+        </section>
+      )}
+
+      {/* Normes du règlement : implantation, lot, CES */}
+      {zonageMuni?.normes && (zonageMuni.normes.lot_superficie_min_m2 || zonageMuni.normes.ces_max) && (
+        <section className="mt-6 card p-6">
+          <p className="text-xs font-mono uppercase tracking-wider text-ink-faint">
+            Normes officielles du règlement de zonage
+          </p>
+          <dl className="mt-4 grid grid-cols-2 gap-x-6 gap-y-4 text-sm md:grid-cols-4">
+            {zonageMuni.normes.lot_superficie_min_m2 != null && (
+              <div>
+                <dt className="text-xs text-ink-faint">Lot min</dt>
+                <dd className="mt-1 text-lg font-medium tabular-nums">
+                  {zonageMuni.normes.lot_superficie_min_m2} m²
+                </dd>
+              </div>
+            )}
+            {zonageMuni.normes.lot_largeur_min_m != null && (
+              <div>
+                <dt className="text-xs text-ink-faint">Largeur lot min</dt>
+                <dd className="mt-1 text-lg font-medium tabular-nums">
+                  {zonageMuni.normes.lot_largeur_min_m} m
+                </dd>
+              </div>
+            )}
+            {zonageMuni.normes.lot_profondeur_min_m != null && (
+              <div>
+                <dt className="text-xs text-ink-faint">Profondeur lot min</dt>
+                <dd className="mt-1 text-lg font-medium tabular-nums">
+                  {zonageMuni.normes.lot_profondeur_min_m} m
+                </dd>
+              </div>
+            )}
+            {zonageMuni.normes.ces_max != null && (
+              <div>
+                <dt className="text-xs text-ink-faint">CES max</dt>
+                <dd className="mt-1 text-lg font-medium tabular-nums">
+                  {(zonageMuni.normes.ces_max * 100).toFixed(0)} %
+                </dd>
+              </div>
+            )}
+            {zonageMuni.normes.hauteur_min_m != null && (
+              <div>
+                <dt className="text-xs text-ink-faint">Hauteur min</dt>
+                <dd className="mt-1 text-lg font-medium tabular-nums">
+                  {zonageMuni.normes.hauteur_min_m} m
+                </dd>
+              </div>
+            )}
+            {zonageMuni.normes.hauteur_max_m != null && (
+              <div>
+                <dt className="text-xs text-ink-faint">Hauteur max</dt>
+                <dd className="mt-1 text-lg font-medium tabular-nums">
+                  {zonageMuni.normes.hauteur_max_m} m
+                </dd>
+              </div>
+            )}
+            {zonageMuni.normes.piia && (
+              <div>
+                <dt className="text-xs text-ink-faint">PIIA</dt>
+                <dd className="mt-1 text-sm font-medium text-warn">Applicable</dd>
+              </div>
+            )}
+            {zonageMuni.normes.pae && (
+              <div>
+                <dt className="text-xs text-ink-faint">PAE</dt>
+                <dd className="mt-1 text-sm font-medium text-warn">Applicable</dd>
+              </div>
+            )}
+          </dl>
+          {zonageMuni.normes.dispositions_speciales && zonageMuni.normes.dispositions_speciales.length > 0 && (
+            <p className="mt-4 text-xs text-ink-mute">
+              Dispositions spéciales :{" "}
+              <span className="font-mono">{zonageMuni.normes.dispositions_speciales.join(", ")}</span>
+              {" — voir le règlement pour le détail."}
+            </p>
+          )}
         </section>
       )}
 
@@ -400,11 +541,6 @@ export default async function TerrainPage({ params, searchParams }: PageProps) {
                   Zone {zonageMuni.id_zone}
                 </p>
               )}
-              {zonageMuni.note_sous_zone && (
-                <p className="mt-3 rounded-md bg-warn-wash/40 px-3 py-2 text-xs text-warn">
-                  {zonageMuni.note_sous_zone}
-                </p>
-              )}
               {zonageMuni.reglement_url && (
                 <a
                   href={zonageMuni.reglement_url}
@@ -413,7 +549,7 @@ export default async function TerrainPage({ params, searchParams }: PageProps) {
                   className="mt-3 inline-flex items-center gap-1.5 text-xs text-accent-deep hover:underline"
                 >
                   <ArrowSquareOut size={12} weight="bold" />
-                  Règlement de zonage PDF
+                  Règlement complet 2021, c.126
                 </a>
               )}
             </>
@@ -422,9 +558,25 @@ export default async function TerrainPage({ params, searchParams }: PageProps) {
           )}
           <div className="hairline my-4" />
           <p className="text-xs font-mono uppercase tracking-wider text-ink-faint">
-            Usages typiques
+            Usages permis (règlement)
           </p>
-          {parcel.usages_permis.length > 0 ? (
+          {Array.isArray(zonageMuni?.usages_permis) && zonageMuni.usages_permis.length > 0 ? (
+            <ul className="mt-2 space-y-1 text-sm text-ink-soft">
+              {(zonageMuni.usages_permis as Array<{ code: string; libelle: string; etages?: [number, number] }>).map((u) => (
+                <li key={u.code + u.libelle} className="flex items-baseline gap-2">
+                  <span className="inline-block min-w-[2.5rem] font-mono text-xs text-accent-deep">
+                    {u.code}
+                  </span>
+                  <span className="flex-1">{u.libelle}</span>
+                  {u.etages && (
+                    <span className="font-mono text-[10px] text-ink-faint">
+                      {u.etages[0]}–{u.etages[1]} ét.
+                    </span>
+                  )}
+                </li>
+              ))}
+            </ul>
+          ) : parcel.usages_permis.length > 0 ? (
             <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-ink-soft">
               {parcel.usages_permis.map((u) => (
                 <li key={u}>{u}</li>

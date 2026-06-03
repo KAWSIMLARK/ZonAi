@@ -1,6 +1,6 @@
 # Rapport de validation — ZonAI (mode live)
 
-*Généré le 2026-06-03T02:30:20.257Z · 36 tests · 36 réussis · 0 échoués · 0 échecs critiques · 2224 ms*
+*Généré le 2026-06-03T12:44:59.369Z · 36 tests · 36 réussis · 0 échoués · 0 échecs critiques · 1798 ms*
 
 ## Mode
 
@@ -109,7 +109,7 @@ Les données mock ont été supprimées. La suite teste maintenant :
 | ✅ | Adresse TR connue ⇒ unité d'évaluation trouvée avec valeur | 🔒 |  |
 | ✅ | Adresse Louiseville ⇒ logements rapportés |  |  |
 | ✅ | inferPotentielResidentiel sur CUBF 1212 (bifamiliale) |  |  |
-| ✅ | inferPotentielResidentiel sur CUBF 1215 (4-6 logements) |  |  |
+| ✅ | inferPotentielResidentiel sur CUBF 1215 (5-9 logements selon repertoire BDU) |  |  |
 
 ### D. Aggregator live
 

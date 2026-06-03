@@ -7,7 +7,16 @@ import { ConstraintBadges } from "@/components/ConstraintBadges";
 import { WarningBanner } from "@/components/WarningBanner";
 import { formatArea, formatCurrency, formatDate, ternaryLabel } from "@/lib/format";
 import type { Parcel, Warning } from "@/lib/types";
-import { ArrowLeft, Buildings, House } from "@phosphor-icons/react/dist/ssr";
+import {
+  ArrowLeft,
+  Buildings,
+  House,
+  ArrowsOutSimple,
+  ArrowSquareOut,
+  CheckCircle,
+  XCircle,
+  Question,
+} from "@phosphor-icons/react/dist/ssr";
 
 interface RoleData {
   trouve?: boolean;
@@ -27,12 +36,32 @@ interface RoleData {
   usage_principal?: string | null;
   usages_secondaires?: string[];
   cubf_codes?: string[];
+  codes_internes?: string[];
 }
 
 interface PotentielData {
   fourchette_logements?: { min: number; max: number };
-  classes?: Array<{ label: string; min: number; max: number }>;
+  classes?: Array<{ label: string; min: number; max: number; inferred?: boolean }>;
   logements_actuels?: number | null;
+  inferred?: boolean;
+}
+
+interface ZonageMuniData {
+  trouve?: boolean;
+  code_famille?: string;
+  famille?: string;
+  categorie?: string;
+  id_zone?: string | null;
+  zonage?: string;
+  usages_permis?: string[];
+  reglement_url?: string;
+  note_sous_zone?: string;
+}
+
+interface SubdivisionData {
+  statut: "possible" | "a_verifier" | "non";
+  raison: string;
+  indices: string[];
 }
 
 interface PageProps {
@@ -55,6 +84,8 @@ export default async function TerrainPage({ params, searchParams }: PageProps) {
       _layers?: Array<{ name: string; status: string; source: string; message?: string }>;
       _role?: RoleData;
       _potentiel?: PotentielData | null;
+      _zonage_muni?: ZonageMuniData | null;
+      _subdivision?: SubdivisionData;
     };
   };
   if (result.status !== "ok" || !result.parcel) notFound();
@@ -64,6 +95,8 @@ export default async function TerrainPage({ params, searchParams }: PageProps) {
   const layers = parcel._layers ?? [];
   const role = parcel._role;
   const potentiel = parcel._potentiel ?? null;
+  const zonageMuni = parcel._zonage_muni ?? null;
+  const subdivision = parcel._subdivision ?? null;
 
   return (
     <div className="container-tight py-12">
@@ -226,7 +259,7 @@ export default async function TerrainPage({ params, searchParams }: PageProps) {
             </p>
           </div>
 
-          {/* Capacité résidentielle */}
+          {/* Capacité résidentielle : actuel vs permis */}
           <aside className="card p-6">
             <div className="flex items-center gap-2">
               <House size={18} weight="duotone" className="text-accent-deep" />
@@ -234,43 +267,162 @@ export default async function TerrainPage({ params, searchParams }: PageProps) {
                 Capacité résidentielle
               </p>
             </div>
-            <div className="mt-4 space-y-3 text-sm">
-              <div className="flex items-baseline justify-between">
-                <span className="text-ink-mute">Logements actuels (rôle)</span>
-                <span className="text-2xl font-semibold tabular-nums">
-                  {role.nombre_logements ?? <span className="text-base text-ink-faint">Aucun</span>}
-                </span>
-              </div>
-              {potentiel && potentiel.fourchette_logements && (
-                <div className="rounded-xl border border-line bg-canvas/60 p-3">
-                  <p className="text-xs text-ink-faint">Permis selon la classe d'utilisation</p>
-                  <p className="mt-1 text-base font-medium">
-                    {potentiel.fourchette_logements.min === potentiel.fourchette_logements.max
-                      ? `${potentiel.fourchette_logements.min} logement${potentiel.fourchette_logements.min > 1 ? "s" : ""}`
-                      : `${potentiel.fourchette_logements.min} à ${potentiel.fourchette_logements.max} logements`}
-                  </p>
-                  {potentiel.classes && potentiel.classes[0] && (
-                    <p className="mt-1 text-xs text-ink-mute">{potentiel.classes[0].label}</p>
-                  )}
-                </div>
-              )}
-              {!potentiel && role.usage_principal && (
-                <p className="text-xs text-ink-mute">
-                  Densité maximale selon le règlement de zonage municipal, non disponible en API ouverte. À consulter au PDF de zonage de la municipalité.
+            <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
+              <div className="rounded-xl border border-line bg-canvas/60 p-3">
+                <p className="text-[10px] font-mono uppercase tracking-wider text-ink-faint">
+                  Actuel (rôle)
                 </p>
+                <p className="mt-1 text-2xl font-semibold tabular-nums">
+                  {role.nombre_logements ?? "0"}
+                </p>
+                <p className="text-xs text-ink-mute">
+                  {role.nombre_logements === 1 ? "logement" : "logements"}
+                </p>
+              </div>
+              <div className="rounded-xl border border-accent/30 bg-accent-wash/40 p-3">
+                <p className="text-[10px] font-mono uppercase tracking-wider text-accent-deep/70">
+                  Permis (estimé)
+                </p>
+                {potentiel && potentiel.fourchette_logements ? (
+                  <>
+                    <p className="mt-1 text-2xl font-semibold tabular-nums text-accent-deep">
+                      {potentiel.fourchette_logements.min === potentiel.fourchette_logements.max
+                        ? potentiel.fourchette_logements.min
+                        : `${potentiel.fourchette_logements.min}–${potentiel.fourchette_logements.max === 999 ? "+" : potentiel.fourchette_logements.max}`}
+                    </p>
+                    <p className="text-xs text-ink-mute">
+                      {potentiel.inferred ? "selon usage actuel" : "selon classe CUBF"}
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <p className="mt-1 text-xl font-semibold text-ink-faint">?</p>
+                    <p className="text-xs text-ink-mute">à vérifier règlement</p>
+                  </>
+                )}
+              </div>
+              <div className="rounded-xl border border-line bg-canvas/60 p-3">
+                <p className="text-[10px] font-mono uppercase tracking-wider text-ink-faint">
+                  Étages actuels
+                </p>
+                <p className="mt-1 text-2xl font-semibold tabular-nums">
+                  {role.nombre_etages_max ?? "?"}
+                </p>
+              </div>
+              <div className="rounded-xl border border-accent/30 bg-accent-wash/40 p-3">
+                <p className="text-[10px] font-mono uppercase tracking-wider text-accent-deep/70">
+                  Étages permis
+                </p>
+                <p className="mt-1 text-xl font-semibold text-ink-faint">
+                  voir<br />règlement
+                </p>
+              </div>
+            </div>
+            {zonageMuni?.reglement_url && (
+              <a
+                href={zonageMuni.reglement_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 inline-flex items-center gap-1.5 text-xs text-accent-deep hover:underline"
+              >
+                <ArrowSquareOut size={12} weight="bold" />
+                Règlement de zonage (PDF) pour zone {zonageMuni.id_zone}
+              </a>
+            )}
+          </aside>
+        </section>
+      )}
+
+      {/* Subdivision possible */}
+      {subdivision && (
+        <section className="mt-6">
+          <div
+            className={`card flex items-start gap-4 p-5 ${
+              subdivision.statut === "non"
+                ? "border-danger/25 bg-danger-wash/50"
+                : subdivision.statut === "possible"
+                  ? "border-ok/30 bg-ok-wash/50"
+                  : "border-warn/30 bg-warn-wash/40"
+            }`}
+          >
+            <div
+              className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full ${
+                subdivision.statut === "non"
+                  ? "text-danger"
+                  : subdivision.statut === "possible"
+                    ? "text-ok"
+                    : "text-warn"
+              }`}
+            >
+              {subdivision.statut === "non" ? (
+                <XCircle size={24} weight="fill" />
+              ) : subdivision.statut === "possible" ? (
+                <CheckCircle size={24} weight="fill" />
+              ) : (
+                <Question size={24} weight="fill" />
               )}
             </div>
-          </aside>
+            <div className="flex-1">
+              <div className="flex items-baseline gap-3">
+                <ArrowsOutSimple size={14} className="text-ink-mute" />
+                <p className="text-xs font-mono uppercase tracking-wider text-ink-faint">
+                  Subdivision du terrain
+                </p>
+              </div>
+              <p className="mt-1 text-lg font-semibold">
+                {subdivision.statut === "non"
+                  ? "Probablement non subdivisible"
+                  : subdivision.statut === "possible"
+                    ? "Subdivision possible"
+                    : "À évaluer en urbanisme"}
+              </p>
+              <p className="mt-1 text-sm text-ink-soft">{subdivision.raison}</p>
+              {subdivision.indices.length > 0 && (
+                <ul className="mt-2 list-disc space-y-0.5 pl-5 text-xs text-ink-mute">
+                  {subdivision.indices.map((i) => (
+                    <li key={i}>{i}</li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </div>
         </section>
       )}
 
       <section className="mt-10 grid gap-6 md:grid-cols-2">
         <div className="card p-6">
           <p className="text-xs font-mono uppercase tracking-wider text-ink-faint">Zonage</p>
-          <p className="mt-2 font-medium">{parcel.zonage}</p>
+          {zonageMuni && zonageMuni.trouve ? (
+            <>
+              <p className="mt-2 text-lg font-semibold">{zonageMuni.famille}</p>
+              {zonageMuni.id_zone && (
+                <p className="mt-1 font-mono text-xs text-ink-faint">
+                  Zone {zonageMuni.id_zone}
+                </p>
+              )}
+              {zonageMuni.note_sous_zone && (
+                <p className="mt-3 rounded-md bg-warn-wash/40 px-3 py-2 text-xs text-warn">
+                  {zonageMuni.note_sous_zone}
+                </p>
+              )}
+              {zonageMuni.reglement_url && (
+                <a
+                  href={zonageMuni.reglement_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-3 inline-flex items-center gap-1.5 text-xs text-accent-deep hover:underline"
+                >
+                  <ArrowSquareOut size={12} weight="bold" />
+                  Règlement de zonage PDF
+                </a>
+              )}
+            </>
+          ) : (
+            <p className="mt-2 font-medium">{parcel.zonage}</p>
+          )}
           <div className="hairline my-4" />
           <p className="text-xs font-mono uppercase tracking-wider text-ink-faint">
-            Usages permis
+            Usages typiques
           </p>
           {parcel.usages_permis.length > 0 ? (
             <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-ink-soft">
@@ -280,7 +432,7 @@ export default async function TerrainPage({ params, searchParams }: PageProps) {
             </ul>
           ) : (
             <p className="mt-2 text-sm text-warn">
-              Aucun usage documenté pour cette municipalité, à valider en urbanisme.
+              Usages spécifiques à valider au règlement de zonage municipal.
             </p>
           )}
         </div>

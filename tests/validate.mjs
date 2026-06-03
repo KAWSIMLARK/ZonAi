@@ -254,11 +254,11 @@ await test("inferPotentielResidentiel sur CUBF 1212 (bifamiliale)", () => {
   assertEqual(p.fourchette_logements.max, 2);
 });
 
-await test("inferPotentielResidentiel sur CUBF 1215 (4-6 logements)", () => {
-  const p = inferPotentielResidentiel(["1215"], 4);
+await test("inferPotentielResidentiel sur CUBF 1215 (5-9 logements selon repertoire BDU)", () => {
+  const p = inferPotentielResidentiel(["1215"], 5);
   assert(p, "Pas de potentiel renvoyé");
-  assertEqual(p.fourchette_logements.min, 4);
-  assertEqual(p.fourchette_logements.max, 6);
+  assertEqual(p.fourchette_logements.min, 5);
+  assertEqual(p.fourchette_logements.max, 9);
 });
 
 // ══════════════════════════════════════════════════════════════════════════

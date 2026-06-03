@@ -1,6 +1,6 @@
 # Rapport de validation — ZonAI (mode live)
 
-*Généré le 2026-06-03T02:12:17.386Z · 36 tests · 36 réussis · 0 échoués · 0 échecs critiques · 2200 ms*
+*Généré le 2026-06-03T02:30:20.257Z · 36 tests · 36 réussis · 0 échoués · 0 échecs critiques · 2224 ms*
 
 ## Mode
 

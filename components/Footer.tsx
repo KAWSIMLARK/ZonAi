@@ -1,12 +1,16 @@
+import { LogoLockup } from "./Logo";
+
 export function Footer() {
   return (
     <footer className="mt-24 border-t border-line bg-canvas">
       <div className="container-wide py-12">
         <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
           <div>
-            <p className="text-xl font-semibold tracking-tight">TerraMauricie</p>
-            <p className="mt-2 max-w-md text-sm text-ink-mute">
-              Prototype d'intelligence foncière régionale pour la Mauricie. Les données affichées sont fictives et servent uniquement à démontrer la mécanique. À valider auprès des sources officielles avant toute décision.
+            <LogoLockup size={28} wordmarkClassName="text-xl" />
+            <p className="mt-3 max-w-md text-sm text-ink-mute">
+              Intelligence foncière régionale. Les couches branchées sont réelles, les
+              valeurs proviennent du rôle géoréférencé 2026 du MAMH. Validation municipale
+              recommandée avant toute décision.
             </p>
           </div>
           <div>
@@ -21,19 +25,20 @@ export function Footer() {
             </ul>
           </div>
           <div>
-            <p className="label-eyebrow">Référentiels visés</p>
+            <p className="label-eyebrow">Sources branchées</p>
             <ul className="mt-3 space-y-1.5 text-sm text-ink-soft">
-              <li>Cadastre du Québec</li>
-              <li>Rôles d'évaluation municipaux</li>
+              <li>Adresses Québec (MRNF)</li>
+              <li>Rôle d'évaluation 2026 (MAMH)</li>
               <li>MELCCFP, zones inondables</li>
               <li>CPTAQ, zonage agricole</li>
-              <li>Atlas CIC, milieux humides</li>
+              <li>CIC, milieux humides</li>
+              <li>Ville de Trois-Rivières</li>
             </ul>
           </div>
         </div>
         <div className="hairline mt-10" />
         <p className="mt-6 text-xs text-ink-faint">
-          © 2026 TerraMauricie. Prototype non commercial. Aucune fiche présentée ne constitue un avis d'évaluation, légal ou environnemental.
+          © 2026 ZonAI. Aucune fiche présentée ne constitue un avis d'évaluation, légal ou environnemental.
         </p>
       </div>
     </footer>

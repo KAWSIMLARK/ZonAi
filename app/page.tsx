@@ -48,7 +48,7 @@ export default function HomePage() {
               <span className="text-accent-deep">sans angle mort.</span>
             </h1>
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-ink-mute">
-              Saisissez une adresse. TerraMauricie croise en direct le géocodage officiel,
+              Saisissez une adresse. ZonAI croise en direct le géocodage officiel,
               les zones inondables MELCCFP, la zone agricole CPTAQ, et le zonage municipal,
               et résume les contraintes avant l'offre d'achat.
             </p>

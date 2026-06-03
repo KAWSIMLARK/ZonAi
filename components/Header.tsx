@@ -1,15 +1,15 @@
 import Link from "next/link";
-import { Compass } from "@phosphor-icons/react/dist/ssr";
+import { LogoLockup } from "./Logo";
 
 export function Header() {
   return (
     <header className="sticky top-0 z-30 border-b border-line bg-canvas/85 backdrop-blur supports-[backdrop-filter]:bg-canvas/70">
       <div className="container-wide flex h-16 items-center justify-between">
-        <Link href="/" className="flex items-center gap-2.5">
-          <span className="flex h-7 w-7 items-center justify-center rounded-md bg-ink text-canvas">
-            <Compass size={16} weight="bold" />
+        <Link href="/" aria-label="ZonAI, accueil" className="flex items-center gap-3">
+          <LogoLockup size={26} />
+          <span className="hidden text-xs font-mono uppercase tracking-[0.16em] text-ink-faint sm:inline">
+            Mauricie
           </span>
-          <span className="text-[15px] font-semibold tracking-tight">TerraMauricie</span>
         </Link>
         <nav className="hidden items-center gap-7 text-sm text-ink-soft md:flex">
           <Link href="/recherche" className="transition-colors hover:text-ink">Rechercher</Link>

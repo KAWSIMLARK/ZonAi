@@ -4,13 +4,13 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "TerraMauricie · Intelligence foncière régionale",
+  title: "ZonAI · Intelligence foncière Mauricie",
   description:
-    "Cherchez un terrain en Mauricie, croisez cadastre, rôles, zones inondables et milieux humides, et voyez les contraintes avant l'offre d'achat.",
-  metadataBase: new URL("https://terramauricie.local"),
+    "Saisissez une adresse en Mauricie. ZonAI croise le rôle d'évaluation 2026, les zones inondables, les milieux humides et le zonage municipal pour révéler les contraintes avant l'offre d'achat.",
+  metadataBase: new URL("https://zonai.local"),
   openGraph: {
-    title: "TerraMauricie",
-    description: "Intelligence foncière régionale pour la Mauricie.",
+    title: "ZonAI",
+    description: "Intelligence foncière en direct, région Mauricie.",
     type: "website",
     locale: "fr_CA",
   },

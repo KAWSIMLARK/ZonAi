@@ -94,7 +94,7 @@ export default async function RechercheePage({ searchParams }: PageProps) {
           <EmptyState
             title="Hors Mauricie"
             description={response.reason}
-            hint="TerraMauricie ne couvre que la région administrative 04, Mauricie."
+            hint="ZonAI ne couvre que la région administrative 04, Mauricie."
             tone="warn"
           />
         )}

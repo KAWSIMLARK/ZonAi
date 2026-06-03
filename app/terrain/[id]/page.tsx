@@ -126,7 +126,7 @@ export default async function TerrainPage({ params, searchParams }: PageProps) {
       <section className="mt-10 grid gap-6 md:grid-cols-[1.4fr_0.6fr]">
         <article className="card p-7">
           <p className="text-xs font-mono uppercase tracking-wider text-ink-faint">
-            Lecture TerraMauricie
+            Lecture ZonAI
           </p>
           <p className="mt-3 text-lg leading-relaxed text-ink">{parcel.resume_ia}</p>
         </article>

@@ -6,7 +6,7 @@ import { Warning } from "@phosphor-icons/react";
 
 export default function ErrorBoundary({ error, reset }: { error: Error; reset: () => void }) {
   useEffect(() => {
-    console.error("[TerraMauricie] erreur runtime:", error);
+    console.error("[ZonAI] erreur runtime:", error);
   }, [error]);
 
   return (
@@ -18,7 +18,7 @@ export default function ErrorBoundary({ error, reset }: { error: Error; reset: (
         <div className="max-w-md">
           <h2 className="text-h1 font-semibold tracking-tight">Une erreur est survenue</h2>
           <p className="mt-2 text-sm text-ink-mute">
-            TerraMauricie n'a pas pu charger cette analyse. Cela peut être lié à des données mock incomplètes, ou à un cas non géré.
+            ZonAI n'a pas pu charger cette analyse. Cela peut être lié à des données mock incomplètes, ou à un cas non géré.
           </p>
           {process.env.NODE_ENV === "development" && (
             <pre className="mt-4 max-h-40 overflow-auto rounded-md border border-line bg-canvas p-3 text-left text-xs text-ink-mute">

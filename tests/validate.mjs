@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Suite de validation TerraMauricie, version « branchement live ».
+// Suite de validation ZonAI, version « branchement live ».
 //
 // Cette suite ne s'appuie plus sur des fiches mock. Elle valide :
 //   A. Les fonctions pures de business-rules (sans dépendance externe)
@@ -330,7 +330,7 @@ for (const r of results) {
   grouped[r.section][r.category || "—"].push(r);
 }
 
-console.log(col("\n━━ TerraMauricie · Suite de validation (mode live) ━━", "bold"));
+console.log(col("\n━━ ZonAI · Suite de validation (mode live) ━━", "bold"));
 for (const [sec, cats] of Object.entries(grouped)) {
   console.log("\n" + col(sec, "cyan"));
   for (const [cat, tests] of Object.entries(cats)) {
@@ -352,7 +352,7 @@ console.log(`  ${col("‼ Critiques échoués", criticalFailed ? "red" : "gray")
 console.log(`  Durée : ${durationMs} ms\n`);
 
 // Rapport markdown
-let md = `# Rapport de validation — TerraMauricie (mode live)\n\n`;
+let md = `# Rapport de validation — ZonAI (mode live)\n\n`;
 md += `*Généré le ${new Date().toISOString()} · ${total} tests · ${passed} réussis · ${failed} échoués · ${criticalFailed} échecs critiques · ${durationMs} ms*\n\n`;
 md += `## Mode\n\nLes données mock ont été supprimées. La suite teste maintenant :\n`;
 md += `- Les fonctions pures de business-rules (référentiel Mauricie, validation, avertissements)\n`;

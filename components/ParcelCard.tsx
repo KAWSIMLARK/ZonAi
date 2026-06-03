@@ -4,12 +4,21 @@ import type { Parcel } from "@/lib/types";
 import { ConstraintBadges } from "./ConstraintBadges";
 import { ConfidenceBadge } from "./ConfidenceBadge";
 
-export function ParcelCard({ parcel, score }: { parcel: Parcel; score?: number }) {
+export function ParcelCard({
+  parcel,
+  score,
+  query,
+}: {
+  parcel: Parcel;
+  score?: number;
+  query?: string;
+}) {
+  // Pour les fiches live, la page détail relance la requête via le paramètre q.
+  const href = query
+    ? `/terrain/${encodeURIComponent(parcel.id)}?q=${encodeURIComponent(query)}`
+    : `/terrain/${encodeURIComponent(parcel.id)}`;
   return (
-    <Link
-      href={`/terrain/${parcel.id}`}
-      className="card-interactive group block overflow-hidden"
-    >
+    <Link href={href} className="card-interactive group block overflow-hidden">
       <div className="grid gap-0 md:grid-cols-[1.6fr_1fr]">
         <div className="p-6">
           <div className="flex items-start justify-between gap-3">
